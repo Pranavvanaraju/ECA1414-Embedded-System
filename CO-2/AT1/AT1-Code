@@ -1,0 +1,98 @@
+#include <stdio.h>
+#include <stdbool.h>
+
+// Function declarations
+int readTemperature(int temperature);
+bool processTemperature(int temperature, int temperatureLimit);
+void operateCoolingSystem(bool coolingCommand);
+
+// Sensor Module
+int readTemperature(int temperature)
+{
+    printf("Sensor Node: Temperature = %d C\n", temperature);
+
+    return temperature;
+}
+
+// Controller Module
+bool processTemperature(int temperature, int temperatureLimit)
+{
+    bool coolingCommand = false;
+
+    if (temperature >= temperatureLimit)
+    {
+        coolingCommand = true;
+
+        printf("Controller Node: High Temperature Detected\n");
+        printf("Controller Node: Cooling Command = ON\n");
+    }
+    else
+    {
+        coolingCommand = false;
+
+        printf("Controller Node: Temperature is Normal\n");
+        printf("Controller Node: Cooling Command = OFF\n");
+    }
+
+    return coolingCommand;
+}
+
+// Actuator Module
+void operateCoolingSystem(bool coolingCommand)
+{
+    if (coolingCommand == true)
+    {
+        printf("Actuator Node: Cooling Motor ON\n");
+    }
+    else
+    {
+        printf("Actuator Node: Cooling Motor OFF\n");
+    }
+}
+
+// Main Function
+int main(void)
+{
+    // Initialize all input values
+    int temperatureValues[8] =
+    {
+        35, 40, 45, 50,
+        55, 60, 65, 70
+    };
+
+    int temperatureLimit = 55;
+
+    int numberOfReadings = 8;
+
+    int currentTemperature;
+
+    bool coolingCommand;
+
+    printf("====================================\n");
+    printf("DISTRIBUTED INDUSTRIAL CONTROL SYSTEM\n");
+    printf("====================================\n");
+
+    // Execute all control cycles
+    for (int i = 0; i < numberOfReadings; i++)
+    {
+        printf("\nControl Cycle: %d\n", i + 1);
+
+        // Sensor sends temperature data
+        currentTemperature =
+            readTemperature(temperatureValues[i]);
+
+        // Controller processes temperature
+        coolingCommand =
+            processTemperature(
+                currentTemperature,
+                temperatureLimit
+            );
+
+        // Actuator operates based on command
+        operateCoolingSystem(coolingCommand);
+    }
+
+    printf("\nSimulation Completed Successfully.\n");
+
+    return 0;
+}
